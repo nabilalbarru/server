@@ -13,7 +13,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
@@ -36,13 +36,13 @@ class LoginController extends Controller
             Cache::put($key, $attempts + 1, now()->addMinutes(5));
 
         
-            if ($attempts + 1 == 5) {
+            if ($attempts + 1 >= 5) {
                 Log::warning('Percobaan login gagal berulang pada email: ' . $email);
             }
 
             return response()->json([
                 'status' => 'error',
-                'pesan' => 'Email atau password salah. Percobaan ke-' . ($attempts + 1)
+                'pesan' => 'Email atau password salah. Sisa percobaan: ' . (5 - ($attempts + 1))
             ], 401);
         }
 
@@ -53,8 +53,21 @@ class LoginController extends Controller
 
         return response()->json([
             'status' => 'berhasil',
-            'user' => ['name' => $user->name, 'email' => $user->email],
+            'user' => $user, 
             'token' => $token
+        ]);
+    }
+
+    /**
+     * fungsi logout
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'berhasil',
+            'pesan' => 'Logout berhasil'
         ]);
     }
 }
