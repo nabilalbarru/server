@@ -20,6 +20,7 @@ class UserController extends Controller
         $allUsers = User::all();
 
         return response()->json([
+
             'success' => 'Berhasil mengambil data',
             'users'   => $allUsers
         ]);
@@ -29,16 +30,16 @@ class UserController extends Controller
     {
          
         $request->validate([
-            'name'     => 'required',
+            'nama'     => 'required',
             'email'    => 'required|unique:users,email',
-            'password' => 'required|min:8|string',
+            'katasandi' => 'required|min:8|string',
             'role'     => 'required'
         ]);
 
         $user = User::create([
-            'name'     => $request->name,
+            'nama'     => $request->nama,
             'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'katasandi' => Hash::make($request->katasandi),
             'role'     => $request->role
         ]);
 
