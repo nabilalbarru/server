@@ -30,16 +30,16 @@ class UserController extends Controller
     {
          
         $request->validate([
-            'nama'     => 'required',
+            'name'     => 'required',
             'email'    => 'required|unique:users,email',
-            'katasandi' => 'required|min:8|string',
-            'role'     => 'required'
+            'password' => 'required|min:8|string',
+            'role'     => 'required|in:admin,user'
         ]);
 
         $user = User::create([
-            'nama'     => $request->nama,
+            'name'     => $request->name,
             'email'    => $request->email,
-            'katasandi' => Hash::make($request->katasandi),
+            'password' => Hash::make($request->password),
             'role'     => $request->role
         ]);
 

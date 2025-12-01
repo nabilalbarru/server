@@ -4,12 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\KendaraanController;
 
 Route::get('/user',[UserController::class,'index'])->middleware('auth:sanctum');
 Route::post('/register',[UserController::class,'store']);
 Route::post('/login',[LoginController::class,'login']);
-
+Route::post('/tracking', [TrackingController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/tracking/riwayat', [TrackingController::class, 'riwayat'])->middleware('auth:sanctum'); 
 // Route untuk kelola kendaraan
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/kendaraan', [KendaraanController::class, 'index']);

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('kendaraan', function (Blueprint $table) {
             $table->id();
-            $table->string('jenis_kendaraan, 150');
+            $table->string('jenis_kendaraan', 150);
             $table->enum('kategori_emisi', ['Rendah','Sedang','Tinggi']);
-            $table->decimal('emisi_perjalanan', 8, 2);
+            $table->string('emisi_perjalanan', 20);
             $table->foreignId('id_admin')->nullable()->constrained('admin')->cascadeOnDelete()->cascadeOnUpdate();
 
         });

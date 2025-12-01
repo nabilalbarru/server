@@ -23,13 +23,15 @@ class KendaraanController extends Controller
         $request->validate([
             'jenis_kendaraan' => 'required',
             'kategori_emisi' => 'required|in:Rendah,Sedang,Tinggi',
-            'emisi_perjalanan' => 'required|numeric'
+            'emisi_perjalanan' => 'required|regex:/^\d+(\.\d{1,2})?-\d+(\.\d{1,2})?g CO\/km$/',
+            'deskripsi_cc_kendaraan'=>'required|string|max:50',
         ]);
 
         $kendaraan = Kendaraan::create([
             'jenis_kendaraan' => $request->jenis_kendaraan,
             'kategori_emisi' => $request->kategori_emisi,
-            'emisi_perjalanan' => $request->emisi_perjalanan
+            'emisi_perjalanan' => $request->emisi_perjalanan,
+            'deskripsi_cc_kendaraan'=>$request->deskripsi_cc_kendaraan
         ]);
 
         return response()->json([
@@ -69,7 +71,7 @@ class KendaraanController extends Controller
             ], 404);
         }
 
-        $kendaraan->update($request->all());
+        $kendaraan->update($request->only(['jenis_kendaraan', 'kategori_emisi', 'emisi_perjalanan', 'deskripsi_cc_kendaraan']));
 
         return response()->json([
             'status' => true,

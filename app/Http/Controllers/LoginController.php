@@ -14,7 +14,7 @@ class LoginController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'katasandi' => 'required'
+            'password' => 'required'
         ]);
 
         $email = $request->email;
@@ -31,9 +31,9 @@ class LoginController extends Controller
 
         $user = User::where('email', $email)->first();
 
-        if (! $user || ! Hash::check($request->katasandi, $user->katasandi)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             
-            Cache::put($key, $attempts + 1, now()->addMinutes(5));
+            Cache::put($key, $attempts + 1, now()->addMinutes(15));
 
         
             if ($attempts + 1 >= 5) {
